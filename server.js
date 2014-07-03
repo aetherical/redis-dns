@@ -20,11 +20,11 @@ var dnsd       = require('dnsd'),
   nconf.use('file', { file: __dirname + '/redis-dns-config.json' });
   nconf.load();
 
-  this.dnsInterface = nconf.get('dns_interface');
-  this.dnsPort      = nconf.get('dns_port');
-  this.dnsZone      = nconf.get('dns_zone');
-  this.redisHost    = nconf.get('redis_host');
-  this.redisPort    = nconf.get('redis_port');
+  dnsInterface = nconf.get('dns_interface');
+  dnsPort      = nconf.get('dns_port');
+  dnsZone      = nconf.get('dns_zone');
+  redisHost    = nconf.get('redis_host');
+  redisPort    = nconf.get('redis_port');
 
   // set logging level
 /*  switch(nconf.get('logging')) {
@@ -50,7 +50,7 @@ function handler(req, res) {
       length       = hostname.length, 
       ttl          = Math.floor(Math.random() * 3600),
       redis        = require("redis"),
-      redis_client = redis.createClient(this.redisHost, this.redisPort);
+      redis_client = redis.createClient(redisPort,redisHost);
 
 
   var answer = {};
@@ -144,6 +144,6 @@ function handler(req, res) {
 }
 
 var server = dnsd.createServer(handler);
-console.log('Server running at'+this.dnsInterface+':'+this.dnsPort);
-server.zone(this.dnsZone, 'ns1.'+this.dnsZone, 'us@'+this.dnsZone, 'now', '2h', '30m', '2w', '10m')
-      .listen(this.dnsPort, this.dnsInterface);
+console.log('Server running at'+dnsInterface+':'+dnsPort);
+server.zone(dnsZone, 'ns1.'+dnsZone, 'us@'+dnsZone, 'now', '2h', '30m', '2w', '10m')
+      .listen(dnsPort, dnsInterface);
